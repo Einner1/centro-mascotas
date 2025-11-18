@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Centro Mascotas{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1>🐾 Bienvenido al Centro de Mascotas</h1>
+    <p class="lead">Encuentra tu nuevo mejor amigo o ayuda a una fundación.</p>
+
+    <a href="{% url 'login_usuario' %}" class="btn btn-primary me-2">Iniciar sesión</a>
+    <a href="{% url 'registro_usuario' %}" class="btn btn-success">Registrarse</a>
+</div>
+{% endblock %}

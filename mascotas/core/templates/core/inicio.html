@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio - Centro Mascotas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 30px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+        }
+        .fundacion {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .fundacion:last-child {
+            border-bottom: none;
+        }
+        /* Estilos para hacer las fundaciones clickeables */
+        .fundacion-link {
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .fundacion-link:hover {
+            background-color: #0056b3;
+        }
+        .logout {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .logout a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #dc3545;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        .logout a:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logout">
+            <a href="{% url 'logout_usuario' %}">Cerrar sesión</a>
+        </div>
+
+        <h1>¡Bienvenido, {{ usuario.username }}!</h1>
+
+        <!-- Fundaciones -->
+        <div class="section">
+            <h2>Fundaciones Registradas</h2>
+            {% if fundaciones %}
+                {% for fundacion in fundaciones %}
+                    <div class="fundacion">
+                        <div>
+                            <strong>{{ fundacion.nombre }}</strong><br>
+                            Dirección: {{ fundacion.direccion }}<br>
+                            Teléfono: {{ fundacion.telefono }}<br>
+                            Email: {{ fundacion.email }}<br>
+                            Capacidad: {{ fundacion.capacidad }}
+                        </div>
+                        <!-- Botón para ver animales de esta fundación -->
+                        <a href="{% url 'fundacion_detalle' fundacion.id %}" class="fundacion-link">Ver animales</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No hay fundaciones registradas.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
