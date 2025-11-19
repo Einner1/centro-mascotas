@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ fundacion.nombre }} - Animales{% endblock %}
+
+{% block extra_css %}
+<style>
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .back-link:hover {
+        background: #e0e7ff;
+        transform: translateX(-5px);
+    }
+
+    .fundacion-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .fundacion-header h1 {
+        margin: 0 0 1rem 0;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .fundacion-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .stat-item {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .stat-item i {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-item strong {
+        display: block;
+        font-size: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #1e293b;
+        margin: 2rem 0 1.5rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .animales-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .animal-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s;
+    }
+
+    .animal-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+    }
+
+    .animal-image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .no-image {
+        width: 100%;
+        height: 220px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 4rem;
+    }
+
+    .animal-info {
+        padding: 1.5rem;
+    }
+
+    .animal-info h3 {
+        margin: 0 0 1rem 0;
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .animal-detail {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    .animal-detail i {
+        color: #667eea;
+        width: 20px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-top: 1rem;
+    }
+
+    .badge-available {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .badge-adopted {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .btn-adopt {
+        width: 100%;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        padding: 0.75rem;
+        border-radius: 10px;
+        font-weight: 600;
+        margin-top: 1rem;
+        transition: all 0.3s;
+    }
+
+    .btn-adopt:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: #f8fafc;
+        border-radius: 15px;
+        border: 2px dashed #cbd5e1;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #cbd5e1;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+        color: #64748b;
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'inicio' %}" class="back-link">
+    <i class="fas fa-arrow-left"></i> Volver al inicio
+</a>
+
+<div class="fundacion-header">
+    <h1><i class="fas fa-home"></i> {{ fundacion.nombre }}</h1>
+    
+    <div class="fundacion-stats">
+        <div class="stat-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <small>Ubicación</small>
+            <strong>{{ fundacion.direccion|truncatewords:3 }}</strong>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-phone"></i>
+            <small>Teléfono</small>
+            <strong>{{ fundacion.telefono }}</strong>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-paw"></i>
+            <small>Capacidad</small>
+            <strong>{{ fundacion.capacidad }}</strong>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-dog"></i>
+            <small>Animales</small>
+            <strong>{{ mascotas.count }}</strong>
+        </div>
+    </div>
+    
+    {% if fundacion.descripcion %}
+        <p style="margin-top: 1rem; opacity: 0.95;">
+            <i class="fas fa-info-circle"></i> {{ fundacion.descripcion }}
+        </p>
+    {% endif %}
+</div>
+
+<h2 class="section-title">
+    <i class="fas fa-paw"></i>
+    Animales Disponibles
+</h2>
+
+{% if mascotas %}
+    <div class="animales-grid">
+        {% for mascota in mascotas %}
+            <div class="animal-card">
+                {% if mascota.foto %}
+                    <img src="{{ mascota.foto.url }}" alt="{{ mascota.nombre }}" class="animal-image" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="no-image" style="display: none;">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                {% else %}
+                    <div class="no-image">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="animal-info">
+                    <h3>
+                        {% if mascota.especie == 'Perro' %}
+                            <i class="fas fa-dog"></i>
+                        {% elif mascota.especie == 'Gato' %}
+                            <i class="fas fa-cat"></i>
+                        {% else %}
+                            <i class="fas fa-paw"></i>
+                        {% endif %}
+                        {{ mascota.nombre }}
+                    </h3>
+                    
+                    <div class="animal-detail">
+                        <i class="fas fa-tag"></i>
+                        <span><strong>Especie:</strong> {{ mascota.especie }}</span>
+                    </div>
+                    
+                    <div class="animal-detail">
+                        <i class="fas fa-birthday-cake"></i>
+                        <span><strong>Edad:</strong> {{ mascota.edad }} año{% if mascota.edad != 1 %}s{% endif %}</span>
+                    </div>
+                    
+                    {% if mascota.disponible %}
+                        <span class="badge badge-available">
+                            <i class="fas fa-check-circle"></i> Disponible
+                        </span>
+                        <a href="{% url 'adoptar_mascota' mascota.id %}" class="btn-adopt">
+                            <i class="fas fa-heart"></i> Adoptar
+                        </a>
+                    {% else %}
+                        <span class="badge badge-adopted">
+                            <i class="fas fa-times-circle"></i> Ya Adoptado
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <i class="fas fa-paw"></i>
+        <p>Esta fundación aún no tiene animales registrados.</p>
+    </div>
+{% endif %}
+{% endblock %}
