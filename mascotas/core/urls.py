@@ -16,6 +16,9 @@ urlpatterns = [
     # Nueva ruta para factura
     path('factura/<int:adopcion_id>/', views.factura_adopcion, name='factura_adopcion'),
     
+    # Nueva ruta para ver mis adopciones
+    path('mis-adopciones/', views.mis_adopciones, name='mis_adopciones'),
+    
     # CRUD Fundaciones
     path('fundaciones/', views.FundacionListView.as_view(), name='fundacion_list'),
     path('fundaciones/nueva/', views.FundacionCreateView.as_view(), name='fundacion_create'),

@@ -15,8 +15,7 @@ from .forms import RegistroUsuarioForm
 # Vista de index/landing page (sin login requerido)
 def index(request):
     """Página principal pública - landing page"""
-    if request.user.is_authenticated:
-        return redirect('inicio')
+    # Permitir ver la landing page incluso si está autenticado
     return render(request, 'core/index.html')
 
 
@@ -82,7 +81,7 @@ def registro_usuario(request):
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
             usuario = form.save()
-            login(request, usuario, backend='django.contrib.auth.backends.ModelBackend')
+            login(request, usuario)
             messages.success(request, 'Tu cuenta ha sido creada correctamente.')
             return redirect('inicio')
         else:
@@ -161,6 +160,19 @@ def factura_adopcion(request, adopcion_id):
     
     # Mostrar página HTML de factura
     return render(request, 'core/factura_adopcion.html', context)
+
+
+# Nueva vista para ver todas las adopciones del usuario
+@login_required(login_url='login_usuario')
+def mis_adopciones(request):
+    """Muestra todas las adopciones del usuario actual"""
+    adopciones = Adopcion.objects.filter(usuario=request.user).order_by('-fecha_adopcion')
+    
+    context = {
+        'adopciones': adopciones,
+        'usuario': request.user,
+    }
+    return render(request, 'core/mis_adopciones.html', context)
 
 
 # -------- FUNDACIONES --------
